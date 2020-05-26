@@ -12,7 +12,7 @@
 
     <!-- INFO 输出配置 -->
     <appender name="logInfoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/data/appLogs/factoring-scf-service.log</File>
+        <File>/data/appLogs/renting-service.log</File>
         <encoder>
             <Pattern>[%date] [%-5level] [%logger %line] [%thread] dstTraceId:[%X{dstTraceId}] %msg
                 [%X{TRACE_LOG_ID}]%n
@@ -21,7 +21,7 @@
             <immediateFlush>true</immediateFlush>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/data/appLogs/factoring-scf-service.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>/data/appLogs/renting-service.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>50KB</maxFileSize>
@@ -71,9 +71,13 @@
     <logger name="org.springframework.web.servlet.DispatcherServlet" level="INFO"/>
     <logger name="org.springframework.web.context.support.XmlWebApplicationContext" level="INFO"/>
     <logger name="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" level="INFO"/>
-    <logger name="com.alibaba.dubbo" level="WARN"/>
     <logger name="org.apache.commons" level="INFO"/>
-    <logger name="com.bestpay.kafka.service" level="ERROR"/>
+    <!--屏蔽日志-->
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="ERROR"/>
+    <!--屏蔽日志-->
+    <logger name="com.zaxxer.hikari.HikariDataSource" level="ERROR"/>
+    <!--屏蔽日志-->
+    <logger name="com.zaxxer.hikari.HikariConfig" level="ERROR"/>
 
     <!-- 日志输出适配器配置 -->
     <root level="DEBUG" name="com.bestpay.auth">
