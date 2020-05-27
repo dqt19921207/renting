@@ -1,7 +1,9 @@
 package com.rent.manager.mapper;
 
 import com.rent.manager.model.People;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface PeopleMapper {
     int deleteByPrimaryKey(Integer id);
 

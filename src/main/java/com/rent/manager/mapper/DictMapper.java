@@ -1,7 +1,9 @@
 package com.rent.manager.mapper;
 
 import com.rent.manager.model.Dict;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface DictMapper {
     int deleteByPrimaryKey(Integer id);
 

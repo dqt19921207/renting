@@ -7,13 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-/**
- * Copyright © 2019 Shanghai zhiWang information technology co. LTD
- *
- * @description:
- * @author: dqt
- * @date: 2020/5/25 16:41
- */
 @RestController
 @RequestMapping("/renting")
 @CrossOrigin

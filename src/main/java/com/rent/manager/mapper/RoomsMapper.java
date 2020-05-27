@@ -1,7 +1,9 @@
 package com.rent.manager.mapper;
 
 import com.rent.manager.model.Rooms;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface RoomsMapper {
     int deleteByPrimaryKey(Integer id);
 

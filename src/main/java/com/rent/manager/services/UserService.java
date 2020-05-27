@@ -31,4 +31,27 @@ public class UserService {
         result.defaultSuccess();
         return result;
     }
+
+    public Result addUser(User user) throws Exception {
+        Result result = new MapResult();
+//        先查用户名重复
+        User repeat = userMapper.selectByUsername(user.getUsername());
+        if (repeat!=null)
+            throw  new Exception("该用户已存在！");
+        user.setDel(0);
+        user.setRole(1);
+        user.setRolename("楼栋管理员");
+
+        userMapper.insertSelective(user);
+        result.defaultSuccess();
+        return result;
+    }
+
+    public Result updateUser(User user) throws Exception {
+        Result result = new MapResult();
+        userMapper.updateByPrimaryKeySelective(user);
+        result.defaultSuccess();
+        return result;
+    }
+
 }

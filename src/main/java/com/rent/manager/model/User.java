@@ -1,8 +1,13 @@
 package com.rent.manager.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rent.manager.util.QueryRequest;
+import lombok.Data;
 
-public class User extends QueryRequest {
+import java.io.Serializable;
+
+public class User extends QueryRequest implements Serializable {
+    private static final long serialVersionUID = -4869594085374385813L;
     private Integer id;
 
     private String username;
@@ -34,7 +39,7 @@ public class User extends QueryRequest {
     }
 
     public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+        this.username = username;
     }
 
     public String getPassword() {
@@ -42,7 +47,7 @@ public class User extends QueryRequest {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getRealname() {
@@ -50,7 +55,7 @@ public class User extends QueryRequest {
     }
 
     public void setRealname(String realname) {
-        this.realname = realname == null ? null : realname.trim();
+        this.realname = realname;
     }
 
     public String getTel() {
@@ -58,7 +63,7 @@ public class User extends QueryRequest {
     }
 
     public void setTel(String tel) {
-        this.tel = tel == null ? null : tel.trim();
+        this.tel = tel;
     }
 
     public String getAvatar() {
@@ -66,7 +71,7 @@ public class User extends QueryRequest {
     }
 
     public void setAvatar(String avatar) {
-        this.avatar = avatar == null ? null : avatar.trim();
+        this.avatar = avatar;
     }
 
     public Integer getDel() {
@@ -90,6 +95,7 @@ public class User extends QueryRequest {
     }
 
     public void setRolename(String rolename) {
-        this.rolename = rolename == null ? null : rolename.trim();
+        this.rolename = rolename;
     }
+
 }

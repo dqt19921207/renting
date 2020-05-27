@@ -42,7 +42,7 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.rent.manager.model.User">
+    <insert id="insert" parameterType="com.rent.manager.model.User" useGeneratedKeys="true" keyProperty="id">
     insert into user (id, username, password, 
       realname, tel, avatar, 
       del, role, rolename
@@ -52,7 +52,7 @@
       #{del,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}, #{rolename,jdbcType=VARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.rent.manager.model.User">
+    <insert id="insertSelective" parameterType="com.rent.manager.model.User" useGeneratedKeys="true" keyProperty="id">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
