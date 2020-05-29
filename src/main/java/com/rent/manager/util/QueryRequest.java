@@ -25,5 +25,8 @@ public class QueryRequest implements Serializable {
 
 	private String token;
 
+	private Integer role;
+	private Integer userId;
+
 
 }

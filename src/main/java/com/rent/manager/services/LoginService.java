@@ -18,6 +18,8 @@ public class LoginService {
         Result result = new MapResult();
         User userdata = userMapper.selectByUsername(user.getUsername());
         if (userdata.getPassword().equals(user.getPassword())) {
+            if (userdata.getDel()==1)
+               return result.defaultFail("该账号已禁用！");
             result.setData("user", userdata);
             result.defaultSuccess();
         } else
