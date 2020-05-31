@@ -21,8 +21,8 @@ public class BuildingController {
 
     @PostMapping("/list")
     public Result getUserList(@RequestBody Building building) {
-        if (building.getRole() == 1)
-            building.setUserId(building.getUserId());
+        if (building.getRole() == 0)
+            building.setUserId(null);
         Result userList = buildingService.getBuildingList(building);
         return userList;
     }

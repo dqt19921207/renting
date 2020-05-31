@@ -10,16 +10,38 @@
     <result column="water" jdbcType="DECIMAL" property="water" />
     <result column="elect" jdbcType="DECIMAL" property="elect" />
     <result column="build_id" jdbcType="INTEGER" property="buildId" />
+    <result column="build_name" jdbcType="VARCHAR" property="buildName" />
+    <result column="elc_fee" jdbcType="DECIMAL" property="elcFee" />
+    <result column="water_fee" jdbcType="DECIMAL" property="waterFee" />
   </resultMap>
   <sql id="Base_Column_List">
     id, rooms, fee, type, del, water, elect, build_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from rooms
-    where id = #{id,jdbcType=INTEGER}
+    select
+    r.*,b.elc_fee ,b.watet_fee water_fee
+    from rooms r,building b
+    where r.id = #{id,jdbcType=INTEGER}
+    and r.build_id=b.id
   </select>
+
+  <select id="getList" parameterType="com.rent.manager.model.Building" resultMap="BaseResultMap">
+    select
+   r.*,b.name build_name
+    from rooms r,building b
+    where r.build_id =b.id
+    <if test="buildId != null">
+      and  r.build_id = #{buildId,jdbcType=INTEGER}
+    </if>
+    <if test="userId != null">
+      and  b.user_id =#{userId}
+    </if>
+    <if test="rooms != null">
+      and  r.rooms =#{rooms}
+    </if>
+    and r.del=0
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from rooms
     where id = #{id,jdbcType=INTEGER}
@@ -29,7 +51,7 @@
       type, del, water, elect, 
       build_id)
     values (#{id,jdbcType=INTEGER}, #{rooms,jdbcType=VARCHAR}, #{fee,jdbcType=DECIMAL}, 
-      #{type,jdbcType=INTEGER}, #{del,jdbcType=INTEGER}, #{water,jdbcType=DECIMAL}, #{elect,jdbcType=DECIMAL}, 
+      #{type,jdbcType=INTEGER}, 0, #{water,jdbcType=DECIMAL}, #{elect,jdbcType=DECIMAL},
       #{buildId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.rent.manager.model.Rooms">

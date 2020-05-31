@@ -3,24 +3,81 @@
 <mapper namespace="com.rent.manager.mapper.PeopleMapper">
   <resultMap id="BaseResultMap" type="com.rent.manager.model.People">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="addr" jdbcType="VARCHAR" property="addr" />
     <result column="idcard" jdbcType="VARCHAR" property="idcard" />
     <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="rooms" jdbcType="INTEGER" property="rooms" />
     <result column="del" jdbcType="INTEGER" property="del" />
     <result column="out_time" jdbcType="TIMESTAMP" property="outTime" />
     <result column="in_time" jdbcType="TIMESTAMP" property="inTime" />
+    <result column="num" jdbcType="VARCHAR" property="num" />
+    <result column="in_elec" jdbcType="DECIMAL" property="inElec" />
+    <result column="in_water" jdbcType="DECIMAL" property="inWater" />
+    <result column="out_elec" jdbcType="DECIMAL" property="outElec" />
+    <result column="out_water" jdbcType="DECIMAL" property="outWater" />
+    <result column="fee" jdbcType="DECIMAL" property="fee" />
+    <result column="pay_fee" jdbcType="DECIMAL" property="payFee" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, addr, idcard, tel, sex, rooms, del, out_time, in_time
+    id,name, addr, idcard, tel, sex, rooms, del, out_time, in_time,num,in_elec,in_water,out_elec,out_water,fee,pay_fee
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from people
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectHistoryFee" parameterType="com.rent.manager.model.People" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from people
+    where num=#{num}
+    and rooms=#{rooms}
+    and out_time is not null
+    order by out_time desc
+    limit 1
+  </select>
+  <select id="getNumList" parameterType="com.rent.manager.model.People" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from people
+    where num=#{num}
+    and rooms=#{rooms}
+    and out_time is not null
+    group by num
+    order by out_time desc
+  </select>
+  <select id="selectRommsPeople" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    count(*)
+    from people
+    where rooms = #{rooms,jdbcType=INTEGER}
+    and out_time is  null
+  </select>
+
+  <update id="peopleOut" parameterType="com.rent.manager.model.People" >
+    update people
+    set pay_fee=#{payFee} ,
+        out_time=now(),
+        out_water=#{outWater},
+        out_elec=#{outElec}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getList" parameterType="com.rent.manager.model.People" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from people
+    where rooms=#{rooms}
+      and out_time is null
+  </select>
+
+  <select id="getHistoryList" parameterType="com.rent.manager.model.People" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from people
+    where rooms=#{rooms}
+    and out_time is not null
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from people
@@ -33,7 +90,7 @@
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, 
       #{idcard,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{rooms,jdbcType=INTEGER}, 
-      #{del,jdbcType=INTEGER}, #{outTime,jdbcType=TIMESTAMP}, #{inTime,jdbcType=TIMESTAMP}
+      0, #{outTime,jdbcType=TIMESTAMP}, #{inTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.rent.manager.model.People">
@@ -60,15 +117,31 @@
       <if test="rooms != null">
         rooms,
       </if>
-      <if test="del != null">
-        del,
-      </if>
       <if test="outTime != null">
         out_time,
       </if>
-      <if test="inTime != null">
-        in_time,
+      <if test="num != null">
+        num,
       </if>
+      <if test="inElec != null">
+        in_elec,
+      </if>
+      <if test="inWater != null">
+        in_water,
+      </if>
+      <if test="outElec != null">
+        out_elec,
+      </if>
+      <if test="outWater != null">
+        out_water,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="payFee != null">
+        pay_fee,
+      </if>
+      in_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -92,15 +165,31 @@
       <if test="rooms != null">
         #{rooms,jdbcType=INTEGER},
       </if>
-      <if test="del != null">
-        #{del,jdbcType=INTEGER},
-      </if>
       <if test="outTime != null">
         #{outTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="inTime != null">
-        #{inTime,jdbcType=TIMESTAMP},
+      <if test="num != null">
+        #{num,jdbcType=VARCHAR},
       </if>
+      <if test="inElec != null">
+        #{inElec,jdbcType=DECIMAL},
+      </if>
+      <if test="inWater != null">
+        #{inWater,jdbcType=DECIMAL},
+      </if>
+      <if test="outElec != null">
+        #{outElec,jdbcType=DECIMAL},
+      </if>
+      <if test="outWater != null">
+        #{outWater,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="payFee != null">
+        #{payFee,jdbcType=DECIMAL},
+      </if>
+      now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.rent.manager.model.People">
